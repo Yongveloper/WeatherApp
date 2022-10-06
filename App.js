@@ -68,6 +68,7 @@ export default function App() {
               </Text>
               <Text style={styles.description}>{day.weather[0].main}</Text>
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
+              <Text>{new Date(day.dt * 1000).toString().substring(0, 10)}</Text>
             </View>
           ))
         )}
