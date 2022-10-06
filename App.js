@@ -8,9 +8,20 @@ import {
   View,
 } from 'react-native';
 import * as Location from 'expo-location';
+import { Fontisto } from '@expo/vector-icons';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const API_KEY = '6f99c8f6d956d191d8cb05b5344c6f88';
+
+const icons = {
+  Clear: 'day-sunny',
+  Clouds: 'cloudy',
+  Rain: 'rain',
+  Atmosphere: 'cloudy-gusts',
+  Snow: 'snow',
+  Drizzle: 'day-rain',
+  Thunderstorm: 'lightning',
+};
 
 export default function App() {
   const [city, setCity] = useState('Loading...');
@@ -53,7 +64,7 @@ export default function App() {
         contentContainerStyle={styles.weather}
       >
         {days.length === 0 ? (
-          <View style={styles.day}>
+          <View style={{ ...styles.day, alignItems: 'center' }}>
             <ActivityIndicator
               color="white"
               style={{ marginTop: 10 }}
@@ -63,12 +74,28 @@ export default function App() {
         ) : (
           days.map((day, index) => (
             <View key={index} style={styles.day}>
-              <Text style={styles.temp}>
-                {parseFloat(day.temp.day).toFixed(1)}
-              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'flex-end',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Text style={styles.temp}>
+                  {parseFloat(day.temp.day).toFixed(1)}
+                </Text>
+                <Fontisto
+                  name={icons[day.weather[0].main]}
+                  size={68}
+                  color="white"
+                />
+              </View>
               <Text style={styles.description}>{day.weather[0].main}</Text>
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
-              <Text>{new Date(day.dt * 1000).toString().substring(0, 10)}</Text>
+              <Text style={{ color: 'white' }}>
+                {new Date(day.dt * 1000).toString().substring(0, 10)}
+              </Text>
             </View>
           ))
         )}
@@ -90,21 +117,26 @@ const styles = StyleSheet.create({
   cityName: {
     fontSize: 68,
     fontWeight: '500',
+    color: 'white',
   },
   weather: {},
   day: {
     width: SCREEN_WIDTH,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
   },
   temp: {
     marginTop: 50,
-    fontSize: 178,
+    fontSize: 100,
+    color: 'white',
   },
   description: {
-    marginTop: -30,
-    fontSize: 60,
+    marginTop: -10,
+    fontSize: 36,
+    color: 'white',
   },
   tinyText: {
     fontSize: 20,
+    color: 'white',
   },
 });
